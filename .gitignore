@@ -1,0 +1,4 @@
+paint_C
+build/
+src/*.o
+*.log

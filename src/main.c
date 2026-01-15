@@ -21,8 +21,12 @@ int main(int argc, char *argv[]) {
                        SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
   
   SDL_Surface *psurf = SDL_GetWindowSurface(pwindow);
-  
+  SDL_FillRect(psurf, NULL, SDL_MapRGB(psurf->format, 0, 0, 0));
+  SDL_UpdateWindowSurface(pwindow);
   bool draw = false;
+  int _x, _y;
+  int32_t pixel_w = 20;
+  int32_t pixel_h = 20;
   while(!done){
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -31,19 +35,23 @@ int main(int argc, char *argv[]) {
           done = true;
           break;
         case SDL_MOUSEMOTION:
+          _x = event.motion.x;
+          _y = event.motion.y;
           draw = true;
           
       }
 
     }
+    if(draw){
+      SDL_Rect pixel = (SDL_Rect){_x-pixel_w/2, _y-pixel_h/2, pixel_w, pixel_h}; // x and y are specified and width and height is specified as 1 pixel each
+      // Clear screen with black color
+      SDL_FillRect(psurf, &pixel, SDL_MapRGB(psurf->format, 255, 0, 0));
 
-    // Clear screen with black color
-    SDL_FillRect(psurf, NULL, SDL_MapRGB(psurf->format, 0, 0, 0));
+      // Here you can add your drawing code
 
-    // Here you can add your drawing code
-
-    SDL_UpdateWindowSurface(pwindow);
-    SDL_Delay((uint32_t)(delay_time * 1000)); // Convert to milliseconds
+      SDL_UpdateWindowSurface(pwindow);
+      SDL_Delay((uint32_t)(delay_time * 1000)); // Convert to milliseconds
+    }
   }
   // Init Pixel
   //   int x, y;
