@@ -12,6 +12,7 @@
 #define pixel_w 10
 #define pixel_h 10
 #define pixel_r 10
+#define TOOLBAR_HEIGHT 60
 
 typedef struct{
   uint8_t color_r;
@@ -27,15 +28,24 @@ Color green = {0, 255, 0, 255};
 Color blue = {0, 0, 255, 255};
 Color black = {0, 0, 0, 255};
 Color white = {255, 255, 255, 255};
+Color yellow = {255, 255, 0, 255};
+Color purple = {130, 0, 130, 255};
 
-Color C_arr[6] = {
+Color C_arr[7] = {
   {255, 0, 0, 255},   // Red
   {0, 255, 0, 255},   // Green
   {0, 0, 255, 255},   // Blue
   {0, 0, 0, 255},     // Black
   {255, 255, 255, 255}, // White
-  {255, 255, 0, 255}  //yellow 
+  {255, 255, 0, 255},  //yellow 
+  {130, 0, 130, 255}  //purple
 };
+
+int CC_poss = sizeof(C_arr) / sizeof(C_arr[0]);
+
+bool inside_canvas(int x, int y) {
+    return y >= TOOLBAR_HEIGHT;
+}
 
 void drawCircle(int _x, int _y, int radius, SDL_Surface *psurf, Color C_used){
   for(int w = 0; w < radius * 2; w++){
@@ -91,7 +101,7 @@ int main(int argc, char *argv[]) {
             draw = true;
             _x = event.button.x;
             _y = event.button.y;
-            CC_used = C_arr[i%6];
+            CC_used = C_arr[i%CC_poss];
           }
           else if (event.button.button == SDL_BUTTON_RIGHT) {
             draw = false;
