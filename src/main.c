@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <math.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 
@@ -10,6 +11,7 @@
 #define TARGET_FPS 60
 #define pixel_w 10
 #define pixel_h 10
+#define pixel_r 10
 
 typedef struct{
   uint8_t color_r;
@@ -35,14 +37,26 @@ Color C_arr[6] = {
   {255, 255, 0, 255}  //yellow 
 };
 
-void drawPixel(bool draw, int _x, int _y, SDL_Surface *psurf, SDL_Window *pwindow, Color C_used){
+void drawCircle(int _x, int _y, int radius, SDL_Surface *psurf, Color C_used){
+  for(int w = 0; w < radius * 2; w++){
+    for(int h = 0; h < radius * 2; h++){
+      int dx = radius - w; // horizontal offset
+      int dy = radius - h; // vertical offset
+      if((dx*dx + dy*dy) <= (radius * radius)){
+        SDL_Rect pixel = (SDL_Rect){_x + dx, _y + dy, 1, 1}; // x and y are specified and width and height is specified as 1 pixel each
+        SDL_FillRect(psurf, &pixel, SDL_MapRGB(psurf->format, C_used.color_r, C_used.color_g, C_used.color_b));
+      }
+    }
+  }
+}
+
+void drawPixel(bool draw, int _x, int _y, SDL_Surface *psurf, Color C_used){
   
-  SDL_Rect pixel = (SDL_Rect){_x-pixel_w/2, _y-pixel_h/2, pixel_w, pixel_h}; // x and y are specified and width and height is specified as 1 pixel each
-  // Clear screen with black color
-  SDL_FillRect(psurf, &pixel, SDL_MapRGB(psurf->format, C_used.color_r, C_used.color_g, C_used.color_b));
+  // SDL_Rect pixel = (SDL_Rect){_x-pixel_w/2, _y-pixel_h/2, pixel_w, pixel_h}; // x and y are specified and width and height is specified as 1 pixel each
+  // SDL_FillRect(psurf, &pixel, SDL_MapRGB(psurf->format, C_used.color_r, C_used.color_g, C_used.color_b));
 
   // Here you can add your drawing code
-
+  drawCircle(_x, _y, pixel_r, psurf, C_used);
 
 }
 
@@ -101,7 +115,7 @@ int main(int argc, char *argv[]) {
       }
 
     }
-    if(draw){drawPixel(draw, _x, _y, psurf, pwindow, CC_used); 
+    if(draw){drawPixel(draw, _x, _y, psurf, CC_used); 
     SDL_UpdateWindowSurface(pwindow);
     }
     uint32_t frame_time = SDL_GetTicks() - frame_start;
