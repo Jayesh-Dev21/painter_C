@@ -5,8 +5,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 600
+#define SCREEN_WIDTH 1200
+#define SCREEN_HEIGHT 900
 #define TARGET_FPS 60
 #define pixel_w 10
 #define pixel_h 10
@@ -26,7 +26,7 @@ Color blue = {0, 0, 255, 255};
 Color black = {0, 0, 0, 255};
 Color white = {255, 255, 255, 255};
 
-Color C_arr[5] = {
+Color C_arr[6] = {
   {255, 0, 0, 255},   // Red
   {0, 255, 0, 255},   // Green
   {0, 0, 255, 255},   // Blue
@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
             CC_used = C_arr[i%6];
           }
           else if (event.button.button == SDL_BUTTON_RIGHT) {
-            draw = true;
+            draw = false;
             _x = event.button.x;
             _y = event.button.y;
             i++;
