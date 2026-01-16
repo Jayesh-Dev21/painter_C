@@ -1,4 +1,4 @@
-name: C CI - Paint_C
+name: C CPP CI
 
 on:
   push:
