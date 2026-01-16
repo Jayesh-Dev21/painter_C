@@ -1,4 +1,4 @@
-# Basic Paint - implemented in C
+Basic Paint - implemented in C
 
 ![](./images/11.png)
 
