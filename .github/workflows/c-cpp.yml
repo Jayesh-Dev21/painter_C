@@ -1,17 +1,34 @@
-name: C/C++ CI
+name: C CI - Paint_C
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: make
-      run: make
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install dependencies (SDL2)
+      run: |
+        sudo apt update
+        sudo apt install -y libsdl2-dev
+
+    - name: Verify SDL2
+      run: |
+        sdl2-config --version
+        sdl2-config --cflags
+        sdl2-config --libs
+
+    - name: Build
+      run: |
+        make
+
+    - name: Clean
+      run: |
+        make clean
