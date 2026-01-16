@@ -36,13 +36,15 @@ Color C_arr[7] = {
   {255, 0, 0, 255},   // Red
   {0, 255, 0, 255},   // Green
   {0, 0, 255, 255},   // Blue
-  {0, 0, 0, 255},     // Black
   {255, 255, 255, 255}, // White
   {255, 255, 0, 255},  //yellow 
-  {130, 0, 130, 255}  //purple
+  {130, 0, 130, 255},  //purple
+  {0, 0, 0, 255}     // Black
 };
 
-int CC_poss = sizeof(C_arr) / sizeof(C_arr[0]);
+int CC_poss = sizeof(C_arr) / sizeof(C_arr[0])-1;
+#define Eraser C_arr[CC_poss]
+int color_i = 0; 
 
 bool inside_canvas(int x, int y) {
     return y >= TOOLBAR_HEIGHT;
@@ -107,7 +109,6 @@ int main(int argc, char *argv[]) {
   bool draw = false;
   int _x, _y;
   Color CC_used = black;
-  int i = 0; 
   while(!done){
     uint32_t frame_start = SDL_GetTicks();
     SDL_Event event;
@@ -121,13 +122,13 @@ int main(int argc, char *argv[]) {
             draw = true;
             _x = event.button.x;
             _y = event.button.y;
-            CC_used = C_arr[i%CC_poss];
+            CC_used = C_arr[color_i%CC_poss];
           }
           else if (event.button.button == SDL_BUTTON_RIGHT) {
             draw = false;
             _x = event.button.x;
             _y = event.button.y;
-            i++;
+            color_i++;
           }
           break;
         case SDL_MOUSEBUTTONUP:
