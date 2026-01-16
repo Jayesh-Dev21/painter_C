@@ -11,8 +11,9 @@
 #define TARGET_FPS 60
 #define pixel_w 10
 #define pixel_h 10
-#define pixel_r 10
 #define TOOLBAR_HEIGHT 60
+
+int16_t pixel_r = 10;
 
 typedef struct{
   uint8_t color_r;
@@ -82,6 +83,25 @@ int main(int argc, char *argv[]) {
     SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
     
   SDL_Surface *psurf = SDL_GetWindowSurface(pwindow);
+
+
+  SDL_Rect toolbar_rect = {0, 0, SCREEN_WIDTH, TOOLBAR_HEIGHT};
+  SDL_Rect canvas_rect  = {0, TOOLBAR_HEIGHT, SCREEN_WIDTH,
+                          SCREEN_HEIGHT - TOOLBAR_HEIGHT};
+
+  SDL_Surface *canvas = SDL_CreateRGBSurface(
+    0,
+    canvas_rect.w,
+    canvas_rect.h,
+    32,
+    0x00FF0000,
+    0x0000FF00,
+    0x000000FF,
+    0xFF000000
+  );
+
+  SDL_FillRect(canvas, NULL,SDL_MapRGB(canvas->format, 0, 0, 0));
+
   SDL_FillRect(psurf, NULL, SDL_MapRGB(psurf->format, 0, 0, 0));
   SDL_UpdateWindowSurface(pwindow);
   bool draw = false;
@@ -121,6 +141,16 @@ int main(int argc, char *argv[]) {
         case SDL_MOUSEMOTION:
           _x = event.motion.x;
           _y = event.motion.y;
+          break;
+        case SDL_MOUSEWHEEL:
+          if(event.wheel.y > 0){
+            pixel_r += 1;
+          }
+          else if(event.wheel.y < 0){
+            if(pixel_r > 1){
+              pixel_r -= 1;
+            }
+          }
           break;
       }
 
